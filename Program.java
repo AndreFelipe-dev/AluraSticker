@@ -17,7 +17,7 @@ public class Program {
 		// fazer uma conexão HTTP e buscar os top 250 filmes
 		// String url = "https://imdb-api.com/en/API/Top250Movies/k_0ojt0yvm";
 
-		String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
+		String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopTVs.json";
 		URI endereco = URI.create(url);
 		var client = HttpClient.newHttpClient();
 		var request = HttpRequest.newBuilder(endereco).GET().build();
@@ -29,20 +29,21 @@ public class Program {
 		var parse = new JsonParse();
 		List<Map<String, String>> listaDeFilmes = parse.parse(body);
 
-		// exibir e manipular os dados
+		//exibir e manipular os dados
 
+		var geradora = new geradoraDeFigurinhas();
+		
 		for (Map<String, String> filme : listaDeFilmes) {
-			
-			String urlImagem= filme.get("Image");
-			String titulo= filme.get("title");
-			InputStream inputStream= new  URL(urlImagem).openStream();
-			
-			String nomeArquivo= titulo + ".png";
-			
-			var geradora = new geradoraDeFigurinhas();
-			geradora.cria(inputStream,nomeArquivo);
-			
-			System.out.println(filme.get("title"));
+
+			String urlImagem = filme.get("image");
+			String titulo = filme.get("title");
+			InputStream inputStream = new URL(urlImagem).openStream();
+
+			String nomeArquivo = titulo + ".png";
+
+			geradora.cria(inputStream, nomeArquivo);
+
+			System.out.println(filme.get(titulo));
 			System.out.println();
 		}
 	}
